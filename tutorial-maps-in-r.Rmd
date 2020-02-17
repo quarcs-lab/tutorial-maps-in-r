@@ -1,0 +1,327 @@
+---
+title: "Making maps in R:"
+subtitle: "Using the sf and tmap Packages"
+author: "Carlos Mendez"
+output:
+  html_document:
+    code_download: true
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 4
+    number_sections: true
+    code_folding: "show"
+    theme: "cosmo"
+    highlight: "monochrome"
+  pdf_document: default
+  word_document: default
+bibliography: biblio.bib
+---
+
+
+<style>
+h1.title {font-size: 18pt; color: DarkBlue;} 
+body, h1, h2, h3, h4 {font-family: "Palatino", serif;}
+body {font-size: 12pt;}
+/* Headers */
+h1,h2,h3,h4,h5,h6{font-size: 14pt; color: #00008B;}
+body {color: #333333;}
+a, a:hover {color: #8B3A62;}
+pre {font-size: 12px;}
+</style>
+
+
+Suggested Citation: 
+
+> Mendez C. (2020).  Making maps in R: Using the sf and tmap Packages. R Studio/RPubs. Available at <https://rpubs.com/quarcs-lab/tutorial-maps-in-r>
+
+This work is licensed under the Creative Commons Attribution-Share Alike 4.0 International License. 
+![](License.png)
+
+
+# Libraries
+
+```{r message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+
+library(tidyverse)  # Modern data science workflow
+library(sf)         # Simple features for R
+library(tmap)       # Thematic Maps
+library(tmaptools)  # Thematic Maps Tools
+library(RColorBrewer) # ColorBrewer Palettes
+library(leaflet)    # Interactive web maps
+library(rgdal)      # Bindings for the Geospatial Data Abstraction Library
+library(rgeos)      # Interface to Geometry Engine - Open Source 
+
+
+# Change the presentation of decimal numbers to 4 and avoid scientific notation
+options(prompt="R> ", digits=4, scipen=999)
+```
+
+# Tutorial objectives
+
+- Load spatial data files into R 
+- Join non-spaital data to spatial data files
+- Create simple choropleth maps
+
+
+# Orginal data sources
+
+The non-spatial datafile is from: 
+
+- Öcal, N., & Yildirim, J. (2010). [Regional effects of terrorism on economic growth in Turkey: A geographically weighted regression approach.](https://journals.sagepub.com/doi/abs/10.1177/0022343310364576) Journal of Peace Research, 47(4), 477-489.
+
+The spatial (shapefile) is from: 
+
+- [Matthew C. Ingram](http://mattingram.net/)
+
+
+# Import the data
+
+
+## Non-spatial data
+
+```{r}
+dat <-read.csv("DATASET.csv")
+```
+
+### Explore the data
+
+```{r}
+glimpse(dat) 
+```
+
+#### Definitions of variables
+
+- growth: growth rate of per capita real income 1987-2001
+- base: lograrithm of the per apita income in the base year 1987
+- T: average terrorism index
+- E: average years of schooling
+- G: real per capita government expenditures in 1987
+- Coastal: dummy variable  which takes the value of one if the province is a coastal province.
+
+
+
+## Spatial data
+
+```{r}
+mapData <- read_sf("MAP.shp")
+```
+
+### Explore the data
+
+```{r}
+glimpse(mapData)
+```
+
+- Check the Coordinate Reference System
+
+```{r}
+st_crs(mapData)
+```
+
+
+# Transform the data
+
+No need to transform any data because both datasets share a common variable `id`
+
+
+# Merge the data
+
+
+```{r}
+dat_map <- inner_join(
+  dat,
+  mapData,
+  by = "id"
+)
+```
+
+## Keep data as sf object
+
+- Keep the data as sf class, so we will not lose the coodinate system
+
+```{r}
+dat_map <- st_as_sf(dat_map)
+st_crs(mapData)
+```
+
+```{r}
+glimpse(dat_map)
+```
+
+
+
+# Plot Thematic Maps
+
+
+## Quick Map 
+
+- A quick map of the Terrorism variable
+
+```{r}
+qtm(dat_map, fill = "T")
+```
+
+
+## Simple Map
+
+```{r}
+tm_shape(dat_map) + tm_fill("T") 
+```
+
+```{r}
+tm_shape(dat_map) + tm_fill("T") +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+## Set color palette
+
+See color reference [here](https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/)
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T", palette = "Greens") +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T", palette = "-Greens") +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+
+## Set color intervals
+
+Enter “style =” followed by one of the options below.
+
+- equal - divides the range of the variable into n parts.
+- pretty - chooses a number of breaks to fit a sequence of equality spaced ‘round’ values. So they keys for these intervals are always tidy and memorable.
+- quantile - equal number of cases in each group
+- jenks - looks for natural breaks in the data
+- cat - if the variable is categorical (i.e. not continuous data)
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T",
+          style = "quantile",
+          palette = "Reds"
+    ) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+We can also change the number of intervals in the colour scheme and how the intervals are spaced. Changing the number of intervals is straight-forward, just n= n (note that the default interval setting may still round the number). Here we have 7 shades instead of the default 5.
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T",
+          style = "quantile",
+          n = 7,
+          palette = "Reds"
+    ) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+
+
+## Add histogram
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T",
+          style = "quantile",
+          n = 5,
+          palette = "YlOrBr",
+          legend.hist = TRUE
+    ) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+
+## Add borders
+
+You can edit the borders of the shapefile with the tm_borders() function which has many arguments. alpha denotes the level of transparency on a scale from 0 to 1 where 0 is completely transparent.
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T",
+          style = "quantile",
+          palette = "Blues"
+    ) + 
+  tm_borders(alpha=.4) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+## Add compass
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T",
+          style = "quantile",
+          palette = "viridis"
+    ) + 
+  tm_borders(alpha=.4) + 
+  tm_compass() +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE)
+```
+
+## Edit the layout
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T",
+          palette = "viridis",
+          style = "quantile",
+          title = "Terrorist Attacks"
+          ) + 
+tm_borders(alpha=.4) + 
+tm_layout(
+  legend.text.size = 0.7,
+  legend.title.size = 1,
+  legend.position = c("right", "bottom"),
+  legend.outside = TRUE,
+  frame = FALSE
+  ) 
+```
+
+# Save a new shapefile
+
+```{r eval=FALSE}
+st_write(dat_map, "dat_map.shp")
+```
+
+
+
+# References
+
+- [Practical 5: Making maps in R](https://data.cdrc.ac.uk/tutorial/aa5491c9-cbac-4026-97c9-f9168462f4ac/70c4bc61-0475-4806-9240-4ef1fa649a06)
+
+- [Modern Geospatial Data Analysis with R](http://files.zevross.com/workshops/spatial/slides/html/0-deck-list.html)
+
+
+# Datasets
+
+- [Non-spatial]()
+- [Spatial]()
+- [Combined]()
+
+END
