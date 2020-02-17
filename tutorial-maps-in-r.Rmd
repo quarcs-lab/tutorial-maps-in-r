@@ -204,11 +204,11 @@ tm_shape(dat_map) +
 
 Enter “style =” followed by one of the options below.
 
-- equal - divides the range of the variable into n parts.
-- pretty - chooses a number of breaks to fit a sequence of equality spaced ‘round’ values. So they keys for these intervals are always tidy and memorable.
-- quantile - equal number of cases in each group
-- jenks - looks for natural breaks in the data
-- cat - if the variable is categorical (i.e. not continuous data)
+- equal: divides the range of the variable into n parts.
+- pretty: chooses a number of breaks to fit a sequence of equality spaced ‘round’ values. 
+- quantile: equal number of cases in each group
+- jenks: looks for natural breaks in the data
+- cat: when the variable is categorical 
 
 ```{r}
 tm_shape(dat_map) + 
@@ -221,7 +221,7 @@ tm_shape(dat_map) +
     frame = FALSE)
 ```
 
-We can also change the number of intervals in the colour scheme and how the intervals are spaced. Changing the number of intervals is straight-forward, just n= n (note that the default interval setting may still round the number). Here we have 7 shades instead of the default 5.
+Change the number of intervals in the color scheme and how the intervals are spaced. Changing the number of intervals n = 7. So, we have 7 shades instead of the default 5.
 
 ```{r}
 tm_shape(dat_map) + 
@@ -320,8 +320,8 @@ st_write(dat_map, "dat_map.shp")
 
 # Datasets
 
-- [Non-spatial]()
-- [Spatial]()
-- [Combined]()
+- [Non-spatial](https://raw.githubusercontent.com/quarcs-lab/tutorial-maps-in-r/master/DATASET.csv)
+- [Spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/MAP.zip?raw=true) 
+- [Combined](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/turkey_admin1_merge3_all.zip?raw=true)
 
 END
