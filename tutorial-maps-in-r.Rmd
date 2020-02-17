@@ -320,7 +320,7 @@ st_write(dat_map, "dat_map.shp")
 
 # Datasets
 
-- [Non-spatial](https://raw.githubusercontent.com/quarcs-lab/tutorial-maps-in-r/master/DATASET.csv)
+- [Non-spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/DATASET.zip?raw=true)
 - [Spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/MAP.zip?raw=true) 
 - [Combined](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/turkey_admin1_merge3_all.zip?raw=true)
 
