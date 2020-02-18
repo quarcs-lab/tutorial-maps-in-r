@@ -15,6 +15,16 @@ output:
     code_folding: "show"
     theme: "cosmo"
     highlight: "monochrome"
+  html_notebook:
+    code_folding: show
+    highlight: monochrome
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
   pdf_document: default
   word_document: default
 bibliography: biblio.bib
@@ -172,11 +182,21 @@ qtm(dat_map, fill = "T")
 tm_shape(dat_map) + tm_fill("T") 
 ```
 
+
+## Remove frame
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T") +
+  tm_layout(frame = FALSE)
+```
+
+
+## Set legend outside
+
 ```{r}
 tm_shape(dat_map) + tm_fill("T") +
-  tm_layout(
-    legend.outside = TRUE,
-    frame = FALSE)
+  tm_layout(legend.outside = TRUE, frame = FALSE)
 ```
 
 ## Set color palette
@@ -186,18 +206,41 @@ See color reference [here](https://www.datanovia.com/en/blog/the-a-z-of-rcolorbr
 ```{r}
 tm_shape(dat_map) + 
   tm_fill("T", palette = "Greens") +
-  tm_layout(
-    legend.outside = TRUE,
-    frame = FALSE)
+  tm_layout(legend.outside = TRUE, frame = FALSE)
 ```
 
 ```{r}
 tm_shape(dat_map) + 
   tm_fill("T", palette = "-Greens") +
-  tm_layout(
-    legend.outside = TRUE,
-    frame = FALSE)
+  tm_layout(legend.outside = TRUE, frame = FALSE)
 ```
+
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T", palette = "viridis") +
+  tm_layout(legend.outside = TRUE, frame = FALSE)
+```
+
+
+## Add polygon names
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T", palette = "viridis") +
+  tm_layout(legend.outside = TRUE, frame = FALSE) +
+  tm_text("province", size = "Shape_Area",  auto.placement = F, legend.size.show = FALSE) 
+```
+
+
+```{r}
+tm_shape(dat_map) + 
+  tm_fill("T", palette = "viridis") +
+  tm_layout(legend.outside = TRUE, frame = FALSE) +
+  tm_text("province", size = "Shape_Area",  auto.placement = TRUE, legend.size.show = FALSE) 
+```
+
+
 
 
 ## Set color intervals
@@ -302,6 +345,22 @@ tm_layout(
   frame = FALSE
   ) 
 ```
+
+
+## Interactive map
+
+```{r}
+tmap_mode("view")
+
+tm_shape(dat_map) + 
+  tm_fill("T", palette = "viridis") +
+  tm_layout(legend.outside = TRUE, frame = FALSE) 
+
+tmap_mode("plot")
+```
+
+
+
 
 # Save a new shapefile
 
