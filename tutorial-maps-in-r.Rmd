@@ -199,6 +199,16 @@ tm_shape(dat_map) + tm_fill("T") +
   tm_layout(legend.outside = TRUE, frame = FALSE)
 ```
 
+## Set legend size
+
+```{r}
+tm_shape(dat_map) + tm_fill("T") +
+  tm_layout(legend.outside = TRUE, frame = FALSE) +
+  tm_legend(text.size = 0.3) 
+```
+
+
+
 ## Set color palette
 
 See color reference [here](https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/)
@@ -233,14 +243,18 @@ tm_shape(dat_map) +
 ```
 
 
+
+[Documentation](https://rdrr.io/cran/tmap/man/tm_text.html)
+
+## Add scale bar
+
 ```{r}
 tm_shape(dat_map) + 
   tm_fill("T", palette = "viridis") +
   tm_layout(legend.outside = TRUE, frame = FALSE) +
-  tm_text("province", size = "Shape_Area",  auto.placement = TRUE, legend.size.show = FALSE) 
+  tm_text("province", size = "Shape_Area",  auto.placement = F, legend.size.show = FALSE)  + 
+  tm_scale_bar(position = c("RIGHT", "BOTTOM"))
 ```
-
-
 
 
 ## Set color intervals
@@ -321,11 +335,16 @@ tm_shape(dat_map) +
           palette = "viridis"
     ) + 
   tm_borders(alpha=.4) + 
-  tm_compass() +
-  tm_layout(
-    legend.outside = TRUE,
-    frame = FALSE)
+  tm_compass(type = "8star", 
+              position = c("RIGHT", "BOTTOM"),
+              show.labels = 2,
+              text.size = 0.35) +
+  tm_layout(legend.outside = TRUE,
+            frame = FALSE)
 ```
+
+[Documentation](https://www.rdocumentation.org/packages/tmap/versions/2.3-2/topics/tm_compass)
+
 
 ## Edit the layout
 
@@ -346,21 +365,28 @@ tm_layout(
   ) 
 ```
 
+[Documentation](https://www.rdocumentation.org/packages/tmap/versions/2.3-2/topics/tm_layout)
 
 ## Interactive map
+
 
 ```{r}
 tmap_mode("view")
 
 tm_shape(dat_map) + 
-  tm_fill("T", palette = "viridis") +
-  tm_layout(legend.outside = TRUE, frame = FALSE) 
+  tm_fill("T",
+          palette = "viridis",
+          id="province",
+          popup.vars=c("T", "growth", "base", "E", "G")
+          ) + 
+	tm_legend(outside=TRUE) +
+  tm_layout(frame = FALSE) 
 
 tmap_mode("plot")
 ```
 
 
-
+[Documentation](https://rdrr.io/cran/tmap/man/tm_view.html)
 
 # Save a new shapefile
 
@@ -372,9 +398,27 @@ st_write(dat_map, "dat_map.shp")
 
 # References
 
+- <https://rdrr.io/cran/tmap/>
+
+- [Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
+
+- <https://marcinstepniak.eu/post/interactive-choropleth-maps-with-r-and-tmap-part-i/>
+
 - [Practical 5: Making maps in R](https://data.cdrc.ac.uk/tutorial/aa5491c9-cbac-4026-97c9-f9168462f4ac/70c4bc61-0475-4806-9240-4ef1fa649a06)
 
 - [Modern Geospatial Data Analysis with R](http://files.zevross.com/workshops/spatial/slides/html/0-deck-list.html)
+
+- <https://tlorusso.github.io/geodata_workshop/tmap_package>
+
+- <https://rstudio-pubs-static.s3.amazonaws.com/229482_b5b182f650434a36ace4eeef2d2bcd83.html#17>
+
+- <https://mran.microsoft.com/snapshot/2017-12-11/web/packages/tmap/vignettes/tmap-nutshell.html>
+
+- [Chapter 8 Solutions](https://geocompr.github.io/geocompkg/articles/solutions08.html)
+
+- [Geocomputation with R website](https://geocompr.github.io/)
+
+- <https://bookdown.org/lexcomber/brunsdoncomber2e/>
 
 
 # Datasets
