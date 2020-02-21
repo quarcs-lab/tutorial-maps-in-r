@@ -408,6 +408,8 @@ st_write(dat_map, "dat_map.shp")
 
 - [Modern Geospatial Data Analysis with R](http://files.zevross.com/workshops/spatial/slides/html/0-deck-list.html)
 
+- [Webinar on Spatial Data Analysis with R](https://www.r-bloggers.com/incase-you-missed-it-my-webinar-on-spatial-data-analysis-with-r/)
+
 - <https://tlorusso.github.io/geodata_workshop/tmap_package>
 
 - <https://rstudio-pubs-static.s3.amazonaws.com/229482_b5b182f650434a36ace4eeef2d2bcd83.html#17>
