@@ -77,6 +77,24 @@ options(prompt="R> ", digits=4, scipen=999)
 - Create simple choropleth maps
 
 
+# Preliminary material
+
+- [Creating thematic maps in R](https://youtu.be/krcRR98C2Z0)
+    - [Github repository](https://github.com/mtennekes/tmap-workshop)
+
+- [Making maps with R](https://geocompr.robinlovelace.net/adv-map.html)
+
+
+# Replication files
+
+- If you are a member of the [QuaRCS lab](https://quarcs-lab.rbind.io/), you can run this tutorial in [R Studio Cloud](https://rstudio.cloud/spaces/15597/project/971780).
+
+## Data
+
+- [Non-spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/DATASET.zip?raw=true)
+- [Spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/MAP.zip?raw=true) 
+- [Combined](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/turkey_admin1_merge3_all.zip?raw=true)
+
 # Orginal data sources
 
 The non-spatial datafile is from: 
@@ -395,6 +413,15 @@ st_write(dat_map, "dat_map.shp")
 ```
 
 
+# Other tutorials
+
+- [ECS530: (IV) Visualization of spatial data](https://rsbivand.github.io/ECS530_h19/ECS530_IV.html)
+
+- [Practical 5: Making maps in R](https://data.cdrc.ac.uk/tutorial/aa5491c9-cbac-4026-97c9-f9168462f4ac/70c4bc61-0475-4806-9240-4ef1fa649a06)
+
+- [Making maps with R](https://geocompr.robinlovelace.net/adv-map.html)
+
+- [Chapter 8 Solutions](https://geocompr.github.io/geocompkg/articles/solutions08.html)
 
 # References
 
@@ -404,7 +431,6 @@ st_write(dat_map, "dat_map.shp")
 
 - <https://marcinstepniak.eu/post/interactive-choropleth-maps-with-r-and-tmap-part-i/>
 
-- [Practical 5: Making maps in R](https://data.cdrc.ac.uk/tutorial/aa5491c9-cbac-4026-97c9-f9168462f4ac/70c4bc61-0475-4806-9240-4ef1fa649a06)
 
 - [Modern Geospatial Data Analysis with R](http://files.zevross.com/workshops/spatial/slides/html/0-deck-list.html)
 
@@ -422,11 +448,5 @@ st_write(dat_map, "dat_map.shp")
 
 - <https://bookdown.org/lexcomber/brunsdoncomber2e/>
 
-
-# Datasets
-
-- [Non-spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/DATASET.zip?raw=true)
-- [Spatial](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/MAP.zip?raw=true) 
-- [Combined](https://github.com/quarcs-lab/tutorial-maps-in-r/blob/master/turkey_admin1_merge3_all.zip?raw=true)
 
 END
